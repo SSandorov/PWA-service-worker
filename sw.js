@@ -52,9 +52,41 @@ self.addEventListener('fetch', (event) => {
     Tarea:
     Interceptar la petición de la imagen main.jpg y modificar esta imagen a 
     main-patas-arriba.jpg
-   */
+   
    if(event.request.url.includes('main.jpg')) {
     const nuevaImagen = fetch('img/main-patas-arriba.jpg');
     event.respondWith(nuevaImagen);
    }
+   */
+   /*
+   Con este código gestionamos los errores del evento de las peticiones
+   Hemos escrito sin querer main-2.jpg en el html y ahora debemos manejar
+   el error
+
+   En este caso en concreto, estamos manejando los errores 404, que son errores
+   que el .catch no recoge, así que debemos manejarlos con el .then
+
+   Para poder manejar los errores, el .then debe retornar un valor
+   Y para poder manejar los errores, primero debemos cogerlos. Para ello
+   nos centraremos en el status de la respuesta, si este es falso es que la
+   petición ha fallado, así que es la mejor manera de recoger los errores
+   */
+   // con esta respuesta del evento fetch, el service worker gestiona todas las
+   // peticiones que entran en la aplicación
+    event.respondWith(
+        fetch(event.request)
+            .then(resp => {
+                /*
+                es importante anotar que este .then solo manejará las imágenes
+                en caso de que el archivo css esté mal indicado, este error no 
+                lo manejará
+                */
+                if(resp.ok) {
+                    return resp;
+                } else {
+                    return fetch('img/main.jpg');
+                }
+                
+            })
+    );
 });
