@@ -26,7 +26,7 @@ self.addEventListener('fetch', (event) => {
     Es importante saber que por norma general, emplearemos el caché del navegador
     para modificar el contenido, sin embargo, es importante saber que se puede
     modificar a mano también, como haremos en este ejemplo
-    */
+    
     if(event.request.url.includes('style.css')) {
         // la instancia Response() es el resultado de cualquier petición fetch
         const respuesta = new Response(`
@@ -47,4 +47,14 @@ self.addEventListener('fetch', (event) => {
         // oportunas
         event.respondWith(respuesta);
     }
+    */
+   /*
+    Tarea:
+    Interceptar la petición de la imagen main.jpg y modificar esta imagen a 
+    main-patas-arriba.jpg
+   */
+   if(event.request.url.includes('main.jpg')) {
+    const nuevaImagen = fetch('img/main-patas-arriba.jpg');
+    event.respondWith(nuevaImagen);
+   }
 });
